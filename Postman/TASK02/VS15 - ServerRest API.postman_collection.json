@@ -1,0 +1,1466 @@
+{
+	"info": {
+		"_postman_id": "e63d6631-5d4c-4fb4-95b8-ec84d4ae4fa4",
+		"name": "VS15 - ServerRest API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26500749",
+		"_collection_link": "https://www.postman.com/gold-escape-256338/workspace/622d5dba-44df-4ec6-8179-8d9955f7b7a7/collection/26500749-e63d6631-5d4c-4fb4-95b8-ec84d4ae4fa4?action=share&source=collection_link&creator=26500749"
+	},
+	"item": [
+		{
+			"name": "PRODUTO",
+			"item": [
+				{
+					"name": "POST",
+					"item": [
+						{
+							"name": "Cadastrar produto válido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"produto\", pm.environment.replaceIn(\"{{$randomProductName}}\"));\r",
+											"\r",
+											"pm.environment.set(\"preco\", pm.environment.replaceIn(\"{{$randomInt}}\"));\r",
+											"\r",
+											"pm.environment.set(\"descricao\", pm.environment.replaceIn(\"{{$randomLoremSentence}}\"));\r",
+											"\r",
+											"pm.environment.set(\"quantidade\", pm.environment.replaceIn(\"{{$randomInt}}\"));\r",
+											"\r",
+											"//criando uma requisição POST logar de usuario\r",
+											"const login = {\r",
+											"    url: pm.environment.get(\"baseURL\") + \"/login\",\r",
+											"    method: \"POST\",\r",
+											"    header: {\r",
+											"        \"content-type\": \"application/json\"\r",
+											"    },\r",
+											"    body: {\r",
+											"        mode: \"raw\",\r",
+											"        raw: JSON.stringify({\r",
+											"            \"email\": \"marcella@qa.com.br\",\r",
+											"            \"password\": \"teste\"\r",
+											"        })\r",
+											"    }\r",
+											"};\r",
+											"pm.sendRequest(login, function(err, res) {\r",
+											"    pm.expect(err).is.null;\r",
+											"    var auth = res.json().authorization;\r",
+											"    pm.environment.set(\"tokenValido\", auth);\r",
+											"    var auth2 = res.json().authorization.split(\" \", 2);\r",
+											"    pm.environment.set(\"tokenSeparado\", auth2[1]);    \r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenSeparado}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nome\": \"{{produto}}\",\r\n  \"preco\": {{preco}},\r\n  \"descricao\": \"{{descricao}}\",\r\n  \"quantidade\": {{quantidade}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/produtos",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"produtos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cadastrar produto em duplicidade",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verifica mensagem ao cadastrar produto em duplicidade\", function () {\r",
+											"    pm.expect(jsonData.message).to.eql(\"Já existe produto com esse nome\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"produto\", pm.environment.replaceIn(\"{{$randomProductName}}\"));\r",
+											"\r",
+											"pm.environment.set(\"preco\", pm.environment.replaceIn(\"{{$randomInt}}\"));\r",
+											"\r",
+											"pm.environment.set(\"descricao\", pm.environment.replaceIn(\"{{$randomLoremSentence}}\"));\r",
+											"\r",
+											"pm.environment.set(\"quantidade\", pm.environment.replaceIn(\"{{$randomInt}}\"));"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenSeparado}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nome\": \"Logitech MX Vertical\",\r\n  \"preco\": {{preco}},\r\n  \"descricao\": \"{{descricao}}\",\r\n  \"quantidade\": {{quantidade}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/produtos",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"produtos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cadastrar produto com usuário administrador \"false\"",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Status code is 403\", function () {\r",
+											"    pm.response.to.have.status(403);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verifica mensagem ao cadastrar produto com usuário com perfil de administrador false\", function () {\r",
+											"    pm.expect(jsonData.message).to.eql(\"Rota exclusiva para administradores\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"produto\", pm.environment.replaceIn(\"{{$randomProductName}}\"));\r",
+											"\r",
+											"pm.environment.set(\"preco\", pm.environment.replaceIn(\"{{$randomInt}}\"));\r",
+											"\r",
+											"pm.environment.set(\"descricao\", pm.environment.replaceIn(\"{{$randomLoremSentence}}\"));\r",
+											"\r",
+											"pm.environment.set(\"quantidade\", pm.environment.replaceIn(\"{{$randomInt}}\"));\r",
+											"\r",
+											"//criando uma requisição POST logar de usuario\r",
+											"const login = {\r",
+											"    url: pm.environment.get(\"baseURL\") + \"/login\",\r",
+											"    method: \"POST\",\r",
+											"    header: {\r",
+											"        \"content-type\": \"application/json\"\r",
+											"    },\r",
+											"    body: {\r",
+											"        mode: \"raw\",\r",
+											"        raw: JSON.stringify({\r",
+											"            \"email\": \"igorjr@qa.com.br\",\r",
+											"            \"password\": \"teste\"\r",
+											"        })\r",
+											"    }\r",
+											"};\r",
+											"pm.sendRequest(login, function(err, res) {\r",
+											"    pm.expect(err).is.null;\r",
+											"    var auth = res.json().authorization;\r",
+											"    pm.environment.set(\"tokenValido\", auth);\r",
+											"    var auth2 = res.json().authorization.split(\" \", 2);\r",
+											"    pm.environment.set(\"tokenSeparado\", auth2[1]);    \r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{tokenSeparado}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nome\": \"{{produto}}\",\r\n  \"preco\": {{preco}},\r\n  \"descricao\": \"{{descricao}}\",\r\n  \"quantidade\": {{quantidade}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/produtos",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"produtos"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "USUARIOS",
+			"item": [
+				{
+					"name": "GET",
+					"item": [
+						{
+							"name": "buscar todos os usuarios",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code é 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/usuarios",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"usuarios"
+									],
+									"query": [
+										{
+											"key": "nome",
+											"value": "{{nome}}",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "buscar pelo nome usuario inexistente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Status code é 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verifica mensagem de busca de usuário por nome inexistente\", function () {\r",
+											"    pm.expect(jsonData.message).to.eql(\"Usuário inexistente, nome de usuário não encontrado em nosso cadastrado\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/usuarios?nome=Gilma Araújo",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"usuarios"
+									],
+									"query": [
+										{
+											"key": "nome",
+											"value": "Gilma Araújo"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "buscar pelo email usuario inexistente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Status code é 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verifica mensagem de busca de usuário por email inexistente\", function () {\r",
+											"    pm.expect(jsonData.message).to.eql(\"Usuário inexistente, email de usuário não encontrado em nosso cadastrado\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/usuarios?email=gilma@qa.com.br",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"usuarios"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "gilma@qa.com.br"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "buscar usuario por id valido",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code é 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/usuarios/:id",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"usuarios",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "xURzlrN6Pbd6iI31"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "buscar usuario por id invalido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Status code é 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Verifica mensagem de busca de usuário por id inválido\", function () {\r",
+											"    pm.expect(jsonData.message).to.eql(\"Usuário não encontrado\");\r",
+											"\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/usuarios/:id",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"usuarios",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "zZZzzzN6Pbd6iI31"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "buscar usuario por id com campo id vazio",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Status code é 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verifica mensagem de busca de usuário por id com campo vazio\", function () {\r",
+											"    pm.expect(jsonData.message).to.eql(\"Usuário não encontrado\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/usuarios/:id",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"usuarios",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "null"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									"//selecionar aleatoriamente um valor booleano e adicione à variável administrador\r",
+									"pm.environment.set(\"nome\", pm.environment.replaceIn('{{$randomFullName}}'));\r",
+									"pm.environment.set(\"email\", pm.environment.replaceIn('{{$randomEmail}}'));\r",
+									"pm.environment.set(\"password\", pm.environment.replaceIn('{{$randomPassword}}'));\r",
+									"pm.environment.set(\"administrador\", pm.environment.replaceIn('{{$randomBoolean}}'));\r",
+									"\r",
+									"const usuario = {\r",
+									"    \"nome\": pm.environment.get(\"nome\"),\r",
+									"    \"email\": pm.environment.get(\"email\"),\r",
+									"    \"password\": pm.environment.get(\"password\"),\r",
+									"    \"administrador\": pm.environment.get(\"administrador\")\r",
+									"}\r",
+									"\r",
+									"pm.environment.set(\"novoUsuario\", usuario)\r",
+									"\r",
+									"//criando uma requisição POST Cadastro de usuario\r",
+									"const cadastrarUsuario = {\r",
+									"    url: pm.environment.get(\"baseURL\") + \"/usuarios\",\r",
+									"    method: \"POST\",\r",
+									"    header: {\r",
+									"        \"content-type\": \"application/json\",\r",
+									"        \"accept\": \"application/json\"\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: \"raw\",\r",
+									"        raw: JSON.stringify(pm.environment.get(\"novoUsuario\"))\r",
+									"    }\r",
+									"};\r",
+									"pm.sendRequest(cadastrarUsuario, function(err, res) {\r",
+									"    pm.expect(err).is.null;\r",
+									"    pm.environment.set(\"_id\", res.json()._id)\r",
+									"});\r",
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: pm.environment.get(\"baseURL\") + \"/usuarios/\" + pm.environment.get(\"_id\"),\r",
+									"    method: \"DELETE\"\r",
+									"})"
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "POST",
+					"item": [
+						{
+							"name": "cadastrar usuario valido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Status code is 201\", function(){\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verifica cadastro com sucesso\", function () {\r",
+											"    pm.expect(jsonData.message).to.eql(\"Cadastro realizado com sucesso\");\r",
+											"    pm.expect(jsonData._id).to.not.be.null\r",
+											"});\r",
+											"\r",
+											"pm.sendRequest({\r",
+											"    url: pm.environment.get(\"baseURL\") + \"/usuarios/\" + jsonData._id,\r",
+											"    method: \"DELETE\"\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"nome\", pm.environment.replaceIn('{{$randomFullName}}'));\r",
+											"pm.environment.set(\"email\", pm.environment.replaceIn('{{$randomEmail}}'));\r",
+											"pm.environment.set(\"password\", pm.environment.replaceIn('{{$randomPassword}}'));\r",
+											"pm.environment.set(\"administrador\", pm.environment.replaceIn('{{$randomBoolean}}'));"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"{{nome}}\",\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"administrador\": \"{{administrador}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/usuarios",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cadastrar usuario valido campo e-mail vazio",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"nome\", pm.environment.replaceIn('{{$randomFullName}}'));\r",
+											"pm.environment.set(\"email\", pm.environment.replaceIn('{{$randomEmail}}'));\r",
+											"pm.environment.set(\"password\", pm.environment.replaceIn('{{$randomPassword}}'));\r",
+											"pm.environment.set(\"administrador\", pm.environment.replaceIn('{{$randomBoolean}}'));"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Status code is 400\", function(){\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verifica mensagem de cadastro de usuário com email vazio\", function () {\r",
+											"    pm.expect(jsonData.email).to.eql(\"email deve ser um email válido\");\r",
+											"    pm.expect(jsonData._id).to.not.be.null\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"{{nome}}\",\r\n    \"email\": \" \",\r\n    \"password\": \"{{password}}\",\r\n    \"administrador\": \"{{administrador}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/usuarios",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cadastrar usuario com email existente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Status code is 400\", function(){\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verifica mensagem de cadastro de usuário com email existente\", function () {\r",
+											"    pm.expect(jsonData.message).to.eql(\"Este email já está sendo usado\");\r",
+											"});\r",
+											"\r",
+											"pm.sendRequest({\r",
+											"    url: pm.environment.get(\"baseURL\") + \"/usuarios/\" + pm.environment.get(\"_id\"),\r",
+											"    method: \"DELETE\"\r",
+											"})"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"{{nome}}\",\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"administrador\": \"{{administrador}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/usuarios",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									"//selecionar aleatoriamente um valor booleano e adicione à variável administrador\r",
+									"pm.environment.set(\"nome\", pm.environment.replaceIn('{{$randomFullName}}'));\r",
+									"pm.environment.set(\"email\", pm.environment.replaceIn('{{$randomEmail}}'));\r",
+									"pm.environment.set(\"password\", pm.environment.replaceIn('{{$randomPassword}}'));\r",
+									"pm.environment.set(\"administrador\", pm.environment.replaceIn('{{$randomBoolean}}'));\r",
+									"\r",
+									"const usuario = {\r",
+									"    \"nome\": pm.environment.get(\"nome\"),\r",
+									"    \"email\": pm.environment.get(\"email\"),\r",
+									"    \"password\": pm.environment.get(\"password\"),\r",
+									"    \"administrador\": pm.environment.get(\"administrador\")\r",
+									"}\r",
+									"\r",
+									"pm.environment.set(\"novoUsuario\", usuario)\r",
+									"\r",
+									"//criando uma requisição POST Cadastro de usuario\r",
+									"const cadastrarUsuario = {\r",
+									"    url: pm.environment.get(\"baseURL\") + \"/usuarios\",\r",
+									"    method: \"POST\",\r",
+									"    header: {\r",
+									"        \"content-type\": \"application/json\",\r",
+									"        \"accept\": \"application/json\"\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: \"raw\",\r",
+									"        raw: JSON.stringify(pm.environment.get(\"novoUsuario\"))\r",
+									"    }\r",
+									"};\r",
+									"pm.sendRequest(cadastrarUsuario, function(err, res) {\r",
+									"    pm.expect(err).is.null;\r",
+									"    pm.environment.set(\"_id\", res.json()._id)\r",
+									"});\r",
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "PUT",
+					"item": [
+						{
+							"name": "alterar cadastro de usuario valido",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verifica atualização com sucesso\", function () {\r",
+											"    pm.expect(jsonData.message).to.eql(\"Registro alterado com sucesso\");\r",
+											"});\r",
+											"\r",
+											"pm.sendRequest({\r",
+											"    url: pm.environment.get(\"baseURL\") + \"/usuarios/\" + pm.environment.get(\"_id\"),\r",
+											"    method: \"DELETE\"\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"{{nome}}\",\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"administrador\": \"{{administrador}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/usuarios/:id",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"usuarios",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{_id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "alterar campo de e-mail do cadastro do usuario para vazio",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Status code is 400\", function(){\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verifica atualização de cadastro de usuário com e-mail vazio\", function () {\r",
+											"    pm.expect(jsonData.email).to.eql(\"email deve ser um email válido\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"{{nome}}\",\r\n    \"email\": \" \",\r\n    \"password\": \"{{password}}\",\r\n    \"administrador\": \"{{administrador}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/usuarios/0uxuPY0cbmQhpEz1",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"usuarios",
+										"0uxuPY0cbmQhpEz1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "alterar campo password do cadastro do usuario para vazio",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Status code is 400\", function(){\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verifica atualização de cadastro de usuário com password vazio\", function () {\r",
+											"    pm.expect(jsonData.password).to.eql(\"Password é campo obrigatório não pode ser vazio\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"{{nome}}\",\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \" \",\r\n    \"administrador\": \"{{administrador}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/usuarios/0uxuPY0cbmQhpEz1",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"usuarios",
+										"0uxuPY0cbmQhpEz1"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									"//selecionar aleatoriamente um valor booleano e adicione à variável administrador\r",
+									"pm.environment.set(\"nome\", pm.environment.replaceIn('{{$randomFullName}}'));\r",
+									"pm.environment.set(\"email\", pm.environment.replaceIn('{{$randomEmail}}'));\r",
+									"pm.environment.set(\"password\", pm.environment.replaceIn('{{$randomPassword}}'));\r",
+									"pm.environment.set(\"administrador\", pm.environment.replaceIn('{{$randomBoolean}}'));\r",
+									"\r",
+									"const usuario = {\r",
+									"    \"nome\": pm.environment.get(\"nome\"),\r",
+									"    \"email\": pm.environment.get(\"email\"),\r",
+									"    \"password\": pm.environment.get(\"password\"),\r",
+									"    \"administrador\": pm.environment.get(\"administrador\")\r",
+									"}\r",
+									"\r",
+									"pm.environment.set(\"novoUsuario\", usuario)\r",
+									"\r",
+									"//criando uma requisição POST Cadastro de usuario\r",
+									"const cadastrarUsuario = {\r",
+									"    url: pm.environment.get(\"baseURL\") + \"/usuarios\",\r",
+									"    method: \"POST\",\r",
+									"    header: {\r",
+									"        \"content-type\": \"application/json\",\r",
+									"        \"accept\": \"application/json\"\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: \"raw\",\r",
+									"        raw: JSON.stringify(pm.environment.get(\"novoUsuario\"))\r",
+									"    }\r",
+									"};\r",
+									"pm.sendRequest(cadastrarUsuario, function(err, res) {\r",
+									"    pm.expect(err).is.null;\r",
+									"    pm.environment.set(\"_id\", res.json()._id)\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"email\", pm.environment.replaceIn('{{$randomEmail}}'))"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "DELETE",
+					"item": [
+						{
+							"name": "deletar por id usuario valido",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/usuarios/:id",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"usuarios",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "pHpYCS3CKnM8jCwX"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deletar por id usuario invalido",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/usuarios/:id",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"usuarios",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "ZzzzPY0cbmQhpEz1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deletar por id usuario com campo id vazio",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/usuarios/:id",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"usuarios",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "LOGIN",
+			"item": [
+				{
+					"name": "POST",
+					"item": [
+						{
+							"name": "logar com usuario valido",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"email\", pm.environment.replaceIn('{{$randomEmail}}'));\r",
+											"pm.environment.set(\"password\", pm.environment.replaceIn('{{$randomPassword}}'));\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verifica login com sucesso\", function () {\r",
+											"    pm.expect(jsonData.message).to.eql(\"Login realizado com sucesso\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"marcella@qa.com.br\",\r\n    \"password\": \"teste\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/login",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "logar com campo de e-mail vazio de usuario valido",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"email\", pm.environment.replaceIn('{{$randomEmail}}'));\r",
+											"pm.environment.set(\"password\", pm.environment.replaceIn('{{$randomPassword}}'));\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Status code is 401\", function(){\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Verifica login com e-mail vazio\", function () {\r",
+											"    pm.expect(jsonData.message).to.eql(\"E-mail e/ou senha inválidos\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \" \",\r\n    \"password\": \"teste\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/login?email=0",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"login"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "logar com campo de password vazio de usuario valido",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"marcella@qa.com.br \",\r\n    \"password\": \" \"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/login",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
