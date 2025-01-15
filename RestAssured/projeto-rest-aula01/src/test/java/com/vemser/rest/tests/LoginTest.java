@@ -15,20 +15,18 @@ public class LoginTest {
     }
 
     @Test
-    public void testLogarUsuario(){
+    public void testLogarUsuarioComSucesso(){
 
         LoginModel login = new LoginModel();
         login.setEmail("marcella@qa.com.br");
         login.setPassword("teste");
 
         given()
-                .log().all()
                 .contentType(ContentType.JSON)
                 .body(login)
         .when()
                 .post("/login")
         .then()
-                .log().all()
                 .statusCode(200)
         ;
     }
@@ -41,13 +39,11 @@ public class LoginTest {
         login.setPassword("teste");
 
         given()
-                .log().all()
                 .contentType(ContentType.JSON)
                 .body(login)
         .when()
                 .post("/login")
         .then()
-                .log().all()
                 .statusCode(400)
         ;
     }

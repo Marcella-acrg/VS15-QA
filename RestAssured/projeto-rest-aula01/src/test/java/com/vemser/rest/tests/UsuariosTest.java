@@ -17,11 +17,9 @@ public class UsuariosTest {
     public void testBuscarTodosUsuariosCadastradosComSucesso() {
 
         given()
-                .log().all()
         .when()
                 .get("/usuarios")
         .then()
-                .log().all()
                 .statusCode(200)
         ;
     }
@@ -64,12 +62,10 @@ public class UsuariosTest {
         String idUsuario = "xURzlrN6Pbd6iI31";
 
         given()
-                .log().all()
                 .pathParam("_id", idUsuario)
         .when()
                 .get("/usuarios/{_id}")
         .then()
-                .log().all()
                 .statusCode(200)
         ;
     }
@@ -112,12 +108,10 @@ public class UsuariosTest {
         String nome = "Marcella Araújo";
 
         given()
-                .log().all()
                 .queryParam("nome", nome)
         .when()
                 .get("/usuarios")
         .then()
-                .log().all()
                 .statusCode(200)
         ;
     }
@@ -132,13 +126,11 @@ public class UsuariosTest {
         usuario.setAdministrador("true");
 
         given()
-                .log().all()
                 .contentType(ContentType.JSON)
                 .body(usuario)
         .when()
                 .post("/usuarios")
         .then()
-                .log().all()
                 .statusCode(201)
         ;
     }
@@ -153,19 +145,17 @@ public class UsuariosTest {
         usuario.setAdministrador("true");
 
         given()
-                .log().all()
                 .contentType(ContentType.JSON)
                 .body(usuario)
         .when()
                 .post("/usuarios")
         .then()
-                .log().all()
                 .statusCode(400)
         ;
     }
 
     @Test
-    public void testCadastrarUsuarioComEmailExistete(){
+    public void testCadastrarUsuarioComEmailExistente(){
 
         UsuarioModel usuario = new UsuarioModel();
         usuario.setNome("Marcella Coelho");
@@ -197,14 +187,12 @@ public class UsuariosTest {
         usuarioAtualizado.setAdministrador("false");
 
         given()
-                .log().all()
                 .pathParam("_id", idUsuario)
                 .contentType(ContentType.JSON)
                 .body(usuarioAtualizado)
         .when()
                 .put("/usuarios/{_id}")
         .then()
-                .log().all()
                 .statusCode(200)
         ;
     }
@@ -221,14 +209,12 @@ public class UsuariosTest {
         usuarioAtualizado.setAdministrador("false");
 
         given()
-                .log().all()
                 .pathParam("_id", idUsuario)
                 .contentType(ContentType.JSON)
                 .body(usuarioAtualizado)
         .when()
                 .put("/usuarios/{_id}")
         .then()
-                .log().all()
                 .statusCode(400)
         ;
     }
@@ -263,12 +249,10 @@ public class UsuariosTest {
         String idUsuario = "PVQzzj9BAIGm2p3p";
 
         given()
-                .log().all()
                 .pathParam("_id", idUsuario)
         .when()
                 .delete("/usuarios/{_id}")
         .then()
-                .log().all()
                 .statusCode(200)
         ;
     }
