@@ -34,6 +34,7 @@ public class LoginTest {
         ;
     }
 
+
     @Test
     public void testLogarUsuario(){
 
@@ -71,7 +72,6 @@ public class LoginTest {
                 .log().all()
                 .statusCode(400)
                 .assertThat()
-                //.body("email", equalTo("email não pode ficar em branco"))
                 .body("email", equalTo("email não pode ficar em branco"))
         ;
     }
