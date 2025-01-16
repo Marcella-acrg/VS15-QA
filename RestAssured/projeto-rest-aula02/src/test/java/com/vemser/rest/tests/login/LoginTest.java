@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.*;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 public class LoginTest {
 
@@ -46,6 +48,9 @@ public class LoginTest {
                 .post("/login")
         .then()
                 .statusCode(200)
+                .assertThat()
+                .body("message", equalTo("Login realizado com sucesso"))
+                .body("authorization", notNullValue())
         ;
     }
 
@@ -57,12 +62,17 @@ public class LoginTest {
         login.setPassword("teste");
 
         given()
+                .log().all()
                 .contentType(ContentType.JSON)
                 .body(login)
         .when()
                 .post("/login")
         .then()
+                .log().all()
                 .statusCode(400)
+                .assertThat()
+                //.body("email", equalTo("email não pode ficar em branco"))
+                .body("email", equalTo("email não pode ficar em branco"))
         ;
     }
 
@@ -74,12 +84,16 @@ public class LoginTest {
         login.setPassword(" ");
 
         given()
+                .log().all()
                 .contentType(ContentType.JSON)
                 .body(login)
         .when()
                 .post("/login")
         .then()
+                .log().all()
                 .statusCode(400)
+                .assertThat()
+                .body("password", equalTo("password não pode ficar em branco"))
         ;
     }
 }
