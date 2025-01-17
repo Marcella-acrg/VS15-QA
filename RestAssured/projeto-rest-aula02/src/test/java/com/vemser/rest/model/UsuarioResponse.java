@@ -10,6 +10,7 @@ public class UsuarioResponse {
     private String administrador;
     @JsonProperty("_id")
     private String id;
+    private String message;
 
     public UsuarioResponse() {
     }
@@ -52,5 +53,13 @@ public class UsuarioResponse {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
