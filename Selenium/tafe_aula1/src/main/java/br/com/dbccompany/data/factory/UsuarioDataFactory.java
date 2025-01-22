@@ -10,7 +10,7 @@ public class UsuarioDataFactory {
     static Faker faker = new Faker(new Locale("PT-BR"));
     public static String vazio = StringUtils.EMPTY;
 
-public static UsuarioModel
+
 
 
 }
