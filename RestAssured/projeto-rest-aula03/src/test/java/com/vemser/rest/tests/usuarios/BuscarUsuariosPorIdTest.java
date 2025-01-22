@@ -6,7 +6,6 @@ import com.vemser.rest.model.UsuarioRequest;
 import com.vemser.rest.model.UsuarioResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import static io.restassured.RestAssured.*;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.*;
 
@@ -17,14 +16,14 @@ public class BuscarUsuariosPorIdTest {
     @Test
     public void testSchemaBuscarUsuarioPorIDValido() {
 
-        String idUsuario = "xURzlrN6Pbd6iI31";
+        Object[] usuarioValido = UsuarioDataFactory.cadastrarUsuarioRetornarID();
+        UsuarioRequest usuario = (UsuarioRequest)usuarioValido[0];
+        String id = (String)usuarioValido[1];
 
-        given()
-                .pathParam("_id", idUsuario)
-        .when()
-                .get("/usuarios/{_id}")
+        UsuarioResponse response = usuarioClient.listarUsuariosPorId(id)
         .then()
                 .body(matchesJsonSchemaInClasspath("schemas/usuarios_por_id.json"))
+                .extract().as(UsuarioResponse.class)
         ;
     }
 
@@ -40,7 +39,7 @@ public class BuscarUsuariosPorIdTest {
         .then()
                 .statusCode(200)
                 .extract().as(UsuarioResponse.class)
-                ;
+        ;
 
         Assertions.assertAll("response",
                 () -> Assertions.assertEquals(usuario.getNome(), response.getNome()),

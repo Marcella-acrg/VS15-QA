@@ -7,7 +7,6 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.util.List;
-import static io.restassured.RestAssured.*;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.*;
 
@@ -17,11 +16,10 @@ public class BuscarUsuariosTest {
 
     @Test
     public void testSchemaBuscarTodosUsuariosCadastrados() {
-        given()
-        .when()
-                .get("/usuarios")
+        Response response = usuarioClient.listarUsuarios()
         .then()
                 .body(matchesJsonSchemaInClasspath("schemas/todos_usuarios_cadastrados.json"))
+                .extract().response()
         ;
     }
 

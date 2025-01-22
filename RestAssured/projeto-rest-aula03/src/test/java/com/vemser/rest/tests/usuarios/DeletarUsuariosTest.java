@@ -3,7 +3,6 @@ package com.vemser.rest.tests.usuarios;
 import com.vemser.rest.client.UsuarioClient;
 import com.vemser.rest.data.factory.UsuarioDataFactory;
 import org.junit.jupiter.api.Test;
-import static io.restassured.RestAssured.*;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.*;
 
@@ -14,12 +13,7 @@ public class DeletarUsuariosTest {
     @Test
     public void testSchemaExcluirUsuarioSemCarrinho() {
 
-        String idUsuario = "PVQzzj9BAIGm2p3p";
-
-        given()
-                .pathParam("_id", idUsuario)
-        .when()
-                .delete("/usuarios/{_id}")
+        usuarioClient.deletarUsuarios(UsuarioDataFactory.getUltimoIdLista())
         .then()
                 .body(matchesJsonSchemaInClasspath("schemas/excluir_usuario_sem_carrinho.json"))
         ;

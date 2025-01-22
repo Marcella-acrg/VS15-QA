@@ -1,12 +1,17 @@
 package com.vemser.rest.model;
 
-public class ProdutoRequest {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class ProdutoResponse {
     private String nome;
     private int preco;
     private String descricao;
     private int quantidade;
+    @JsonProperty("_id")
+    private String id;
+    private String message;
 
-    public ProdutoRequest() {
+    public ProdutoResponse() {
     }
 
     public String getNome() {
@@ -41,13 +46,31 @@ public class ProdutoRequest {
         this.quantidade = quantidade;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     @Override
     public String toString() {
-        return "Produto{" +
+        return "ProdutoResponse{" +
                 "nome='" + nome + '\'' +
-                ", preco=" + preco +
+                ", preco='" + preco + '\'' +
                 ", descricao='" + descricao + '\'' +
-                ", quantidade=" + quantidade +
+                ", quantidade='" + quantidade + '\'' +
+                ", id='" + id + '\'' +
+                ", message='" + message + '\'' +
                 '}';
     }
 }

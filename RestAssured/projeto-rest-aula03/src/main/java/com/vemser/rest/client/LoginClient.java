@@ -9,12 +9,12 @@ public class LoginClient extends BaseClient {
 
     private final String LOGIN = "/login";
 
-    public Response logarUsuarios(String email, String password) {
+    public Response logarUsuarios(LoginRequest login) {
 
         return
                 given()
                         .spec(super.set())
-                        .body(new LoginRequest(email, password))
+                        .body(login)
                 .when()
                         .post(LOGIN)
                 ;

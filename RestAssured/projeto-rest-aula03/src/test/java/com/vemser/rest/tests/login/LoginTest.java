@@ -4,6 +4,7 @@ import com.vemser.rest.client.LoginClient;
 import com.vemser.rest.data.factory.LoginDataFactory;
 import com.vemser.rest.model.LoginRequest;
 import org.junit.jupiter.api.Test;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
@@ -12,11 +13,22 @@ public class LoginTest {
     private LoginClient loginClient = new LoginClient();
 
     @Test
+    public void testSchemaLogarUsuario(){
+
+        LoginRequest login = LoginDataFactory.novoLoginValido();
+
+        loginClient.logarUsuarios(login)
+                .then()
+                .body(matchesJsonSchemaInClasspath("schemas/logar_usuario.json"))
+        ;
+    }
+
+    @Test
     public void testLogarUsuario(){
 
         LoginRequest login = LoginDataFactory.novoLoginValido();
 
-        loginClient.logarUsuarios(login.getEmail(), login.getPassword())
+        loginClient.logarUsuarios(login)
         .then()
                 .assertThat()
                 .statusCode(200)
@@ -30,7 +42,7 @@ public class LoginTest {
 
         LoginRequest login = LoginDataFactory.loginSemEmail();
 
-        loginClient.logarUsuarios(login.getEmail(), login.getPassword())
+        loginClient.logarUsuarios(login)
         .then()
                 .assertThat()
                 .statusCode(400)
@@ -43,7 +55,7 @@ public class LoginTest {
 
         LoginRequest login = LoginDataFactory.loginSemPassword();
 
-        loginClient.logarUsuarios(login.getEmail(), login.getPassword())
+        loginClient.logarUsuarios(login)
         .then()
                 .assertThat()
                 .statusCode(400)

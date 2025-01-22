@@ -58,7 +58,6 @@ public class UsuarioDataFactory {
 
     public static Object[] atualizarUsuarioRetornarID(){
         UsuarioRequest usuarioRequest = novoUsuario();
-        System.out.println(usuarioRequest);
         String idExistente = usuarioClient.cadastrarUsuarios(usuarioRequest).path("_id");
         usuarioRequest.setEmail(faker.internet().emailAddress());
         usuarioRequest.setPassword(faker.internet().password());
@@ -68,7 +67,6 @@ public class UsuarioDataFactory {
 
     public static Object[] atualizarUsuarioComEmailVazio(){
         UsuarioRequest usuarioRequest = novoUsuario();
-        System.out.println(usuarioRequest);
         String idExistente = usuarioClient.cadastrarUsuarios(usuarioRequest).path("_id");
         usuarioRequest.setEmail("");
 
@@ -77,7 +75,6 @@ public class UsuarioDataFactory {
 
     public static Object[] atualizarUsuarioComPasswordVazio(){
         UsuarioRequest usuarioRequest = novoUsuario();
-        System.out.println(usuarioRequest);
         String idExistente = usuarioClient.cadastrarUsuarios(usuarioRequest).path("_id");
         usuarioRequest.setPassword("");
 

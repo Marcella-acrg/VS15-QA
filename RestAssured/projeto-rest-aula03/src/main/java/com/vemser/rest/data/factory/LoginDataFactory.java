@@ -40,4 +40,11 @@ public class LoginDataFactory {
 
         return login;
     }
+
+    public static String obterTokenDeAtutenticacao(LoginRequest login) {
+
+        return loginClient.logarUsuarios(login)
+        .then()
+                .extract().path("authorization");
+    }
 }

@@ -4,7 +4,7 @@ import com.vemser.rest.model.UsuarioRequest;
 import io.restassured.response.Response;
 import static io.restassured.RestAssured.*;
 
-public class UsuarioClient extends BaseClient{
+public class UsuarioClient extends BaseClient {
 
     private final String USUARIOS = "/usuarios";
 
@@ -16,7 +16,7 @@ public class UsuarioClient extends BaseClient{
                         .body(usuario)
                 .when()
                         .post(USUARIOS)
-            ;
+                ;
     }
 
     public Response listarUsuarios() {
@@ -26,7 +26,7 @@ public class UsuarioClient extends BaseClient{
                         .spec(super.set())
                 .when()
                         .get(USUARIOS)
-            ;
+                ;
     }
 
     public Response listarUsuariosPorNome(String nome) {
@@ -48,7 +48,7 @@ public class UsuarioClient extends BaseClient{
                         .pathParam("_id", id)
                 .when()
                         .get(USUARIOS + "/{_id}")
-            ;
+                ;
     }
 
     public Response deletarUsuarios(String id) {
@@ -59,7 +59,7 @@ public class UsuarioClient extends BaseClient{
                         .pathParam("_id", id)
                 .when()
                         .delete(USUARIOS + "/{_id}")
-            ;
+                ;
     }
 
     public Response atualizarUsuariosPorId(UsuarioRequest usuario, String id) {

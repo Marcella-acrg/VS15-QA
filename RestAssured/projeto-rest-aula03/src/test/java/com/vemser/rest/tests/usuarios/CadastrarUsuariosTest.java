@@ -3,9 +3,7 @@ package com.vemser.rest.tests.usuarios;
 import com.vemser.rest.client.UsuarioClient;
 import com.vemser.rest.data.factory.UsuarioDataFactory;
 import com.vemser.rest.model.UsuarioRequest;
-import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
-import static io.restassured.RestAssured.*;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.*;
 
@@ -16,20 +14,10 @@ public class CadastrarUsuariosTest {
     @Test
     public void testSchemaCadastrarUsuario(){
 
-        UsuarioRequest usuario = new UsuarioRequest();
-        usuario.setNome("Marcella Araújo");
-        usuario.setEmail("marcella@qa.com.br");
-        usuario.setPassword("teste");
-        usuario.setAdministrador("true");
+        UsuarioRequest usuario = UsuarioDataFactory.usuarioValido();
 
-        given()
-                .log().all()
-                .contentType(ContentType.JSON)
-                .body(usuario)
-        .when()
-                .post("/usuarios")
+        usuarioClient.cadastrarUsuarios(usuario)
         .then()
-                .log().all()
                 .body(matchesJsonSchemaInClasspath("schemas/cadastrar_usuario.json"))
         ;
     }
