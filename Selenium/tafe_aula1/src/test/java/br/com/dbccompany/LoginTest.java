@@ -45,7 +45,7 @@ public class LoginTest {
         driver.findElement(By.cssSelector(btnLogin)).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(lblLogged)));
         String textLblLogged = driver.findElement(By.cssSelector(lblLogged)).getText();
-        Assert.assertEquals(textLblLogged, "Logged in as ");
+        Assert.assertEquals(textLblLogged, "Logged in as Usuário Teste");
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(btnDelete)));
         driver.findElement(By.cssSelector(btnDelete)).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-qa=\"account-deleted\"] b")));
@@ -80,8 +80,32 @@ public class LoginTest {
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.automationexercise.com/login");
         String loginMessage = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".signup-form > h2"))).getText();
         Assert.assertEquals(loginMessage, "Login to your account");
+    }
+
+    @Test
+    public void deveFazerLoginComDadosInvalidos(){
+
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a[style=\"color: orange;\"]")));
+
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(btnSignupLogin)));
+        driver.findElement(By.cssSelector(btnSignupLogin)).click();
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.automationexercise.com/login");
+        String signupMessage = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".login-form > h2"))).getText();
+        Assert.assertEquals(signupMessage, "Login to your account");
+
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[data-qa=\"login-email\"]")));
+        driver.findElement(By.cssSelector("input[data-qa=\"login-email\"]")).sendKeys(BaseDataFactory.emailAleatorio());
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-qa=\"login-password\"]")));
+        driver.findElement(By.cssSelector("[data-qa=\"login-password\"]")).sendKeys(BaseDataFactory.senhaAleatoria());
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(btnLogin)));
+        driver.findElement(By.cssSelector(btnLogin)).click();
+
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.automationexercise.com/login");
+        String loginMessage = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("p[style=\"color: red;\"]"))).getText();
+        Assert.assertEquals(loginMessage, "Your email or password is incorrect!");
 
     }
+
 
     @AfterTest
     public void finalizarNavegador(){

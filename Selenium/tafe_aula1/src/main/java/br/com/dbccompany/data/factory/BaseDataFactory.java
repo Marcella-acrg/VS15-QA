@@ -15,8 +15,8 @@ public class BaseDataFactory {
 
     public static LoginModel loginValido() {
         LoginModel login = new LoginModel();
-        login.setEmail(prop.getProperty("email"));
-        login.setPassword(prop.getProperty("password"));
+        login.setEmail("usuario_teste@gmail.com");
+        login.setPassword("teste123");
 
         return login;
     }
@@ -29,4 +29,7 @@ public class BaseDataFactory {
         return faker.name().fullName();
     }
 
+    public static String senhaAleatoria() {
+        return faker.internet().password();
+    }
 }
