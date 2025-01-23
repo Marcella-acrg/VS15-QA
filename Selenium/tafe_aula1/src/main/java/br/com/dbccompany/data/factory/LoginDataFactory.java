@@ -8,7 +8,7 @@ import utils.Manipulation;
 import java.util.Locale;
 import java.util.Properties;
 
-public class BaseDataFactory {
+public class LoginDataFactory {
     static Faker faker = new Faker(new Locale("PT-BR"));
     public static String vazio = StringUtils.EMPTY;
     public static final Properties prop = Manipulation.getProp();

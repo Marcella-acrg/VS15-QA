@@ -1,6 +1,6 @@
 package br.com.dbccompany;
 
-import br.com.dbccompany.data.factory.BaseDataFactory;
+import br.com.dbccompany.data.factory.LoginDataFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -32,7 +32,7 @@ public class CartTest {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(btnCart)));
         driver.findElement(By.cssSelector(btnCart)).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[class=\"single-widget\"] h2")));
-        driver.findElement(By.cssSelector("[id=\"susbscribe_email\"]")).sendKeys(BaseDataFactory.emailAleatorio());
+        driver.findElement(By.cssSelector("[id=\"susbscribe_email\"]")).sendKeys(LoginDataFactory.emailAleatorio());
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[class=\"btn btn-default\"]")));
         driver.findElement(By.cssSelector("[class=\"btn btn-default\"]")).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[class=\"alert-success alert\"]")));

@@ -1,6 +1,6 @@
 package br.com.dbccompany;
 
-import br.com.dbccompany.data.factory.BaseDataFactory;
+import br.com.dbccompany.data.factory.LoginDataFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -38,9 +38,9 @@ public class LoginTest {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(btnSignupLogin)));
         driver.findElement(By.cssSelector(btnSignupLogin)).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[data-qa=\"login-email\"]")));
-        driver.findElement(By.cssSelector("input[data-qa=\"login-email\"]")).sendKeys(BaseDataFactory.loginValido().getEmail());
+        driver.findElement(By.cssSelector("input[data-qa=\"login-email\"]")).sendKeys(LoginDataFactory.loginValido().getEmail());
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-qa=\"login-password\"]")));
-        driver.findElement(By.cssSelector("[data-qa=\"login-password\"]")).sendKeys(BaseDataFactory.loginValido().getPassword());
+        driver.findElement(By.cssSelector("[data-qa=\"login-password\"]")).sendKeys(LoginDataFactory.loginValido().getPassword());
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(btnLogin)));
         driver.findElement(By.cssSelector(btnLogin)).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(lblLogged)));
@@ -66,9 +66,9 @@ public class LoginTest {
         Assert.assertEquals(signupMessage, "Login to your account");
 
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[data-qa=\"login-email\"]")));
-        driver.findElement(By.cssSelector("input[data-qa=\"login-email\"]")).sendKeys(BaseDataFactory.loginValido().getEmail());
+        driver.findElement(By.cssSelector("input[data-qa=\"login-email\"]")).sendKeys(LoginDataFactory.loginValido().getEmail());
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-qa=\"login-password\"]")));
-        driver.findElement(By.cssSelector("[data-qa=\"login-password\"]")).sendKeys(BaseDataFactory.loginValido().getPassword());
+        driver.findElement(By.cssSelector("[data-qa=\"login-password\"]")).sendKeys(LoginDataFactory.loginValido().getPassword());
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(btnLogin)));
         driver.findElement(By.cssSelector(btnLogin)).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(lblLogged)));
@@ -94,9 +94,9 @@ public class LoginTest {
         Assert.assertEquals(signupMessage, "Login to your account");
 
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[data-qa=\"login-email\"]")));
-        driver.findElement(By.cssSelector("input[data-qa=\"login-email\"]")).sendKeys(BaseDataFactory.emailAleatorio());
+        driver.findElement(By.cssSelector("input[data-qa=\"login-email\"]")).sendKeys(LoginDataFactory.emailAleatorio());
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-qa=\"login-password\"]")));
-        driver.findElement(By.cssSelector("[data-qa=\"login-password\"]")).sendKeys(BaseDataFactory.senhaAleatoria());
+        driver.findElement(By.cssSelector("[data-qa=\"login-password\"]")).sendKeys(LoginDataFactory.senhaAleatoria());
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(btnLogin)));
         driver.findElement(By.cssSelector(btnLogin)).click();
 

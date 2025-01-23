@@ -7,7 +7,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-public class UsuarioDataFactory extends BaseDataFactory {
+public class UsuarioDataFactory extends LoginDataFactory {
 
     public static UsuarioModel novoUsuario () {
         UsuarioModel usuario = new UsuarioModel();

@@ -1,6 +1,6 @@
 package br.com.dbccompany;
 
-import br.com.dbccompany.data.factory.BaseDataFactory;
+import br.com.dbccompany.data.factory.LoginDataFactory;
 import br.com.dbccompany.data.factory.UsuarioDataFactory;
 import br.com.dbccompany.model.UsuarioModel;
 import org.openqa.selenium.By;
@@ -112,9 +112,9 @@ public class RegisterTest {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(btnSignupLogin)));
         driver.findElement(By.cssSelector(btnSignupLogin)).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[class=\"signup-form\"] h2")));
-        driver.findElement(By.cssSelector("[data-qa=\"signup-name\"")).sendKeys(BaseDataFactory.nomeValido());
+        driver.findElement(By.cssSelector("[data-qa=\"signup-name\"")).sendKeys(LoginDataFactory.nomeValido());
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-qa=\"signup-email\"")));
-        driver.findElement(By.cssSelector("[data-qa=\"signup-email\"")).sendKeys(BaseDataFactory.loginValido().getEmail());
+        driver.findElement(By.cssSelector("[data-qa=\"signup-email\"")).sendKeys(LoginDataFactory.loginValido().getEmail());
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-qa=\"signup-button\"")));
         driver.findElement(By.cssSelector("[data-qa=\"signup-button\"")).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(lblEmailExist)));
