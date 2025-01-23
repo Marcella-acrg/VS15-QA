@@ -80,8 +80,8 @@ public class LoginTest {
         Assert.assertEquals(driver.getCurrentUrl(), "https://www.automationexercise.com/login");
         String loginMessage = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".signup-form > h2"))).getText();
         Assert.assertEquals(loginMessage, "Login to your account");
-
     }
+
 
     @AfterTest
     public void finalizarNavegador(){
