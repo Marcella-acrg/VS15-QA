@@ -51,7 +51,7 @@ public class ProductTest {
     }
 
     @Test
-    public void deveVerificarQuantidadeDeItensNoCarrinhoTest() throws InterruptedException {
+    public void deveVerificarQuantidadeDeItensNoCarrinho() throws InterruptedException {
 
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a[style=\"color: orange;\"]")));
 

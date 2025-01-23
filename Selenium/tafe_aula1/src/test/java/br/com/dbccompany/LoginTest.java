@@ -83,7 +83,7 @@ public class LoginTest {
     }
 
     @Test
-    public void deveFazerLoginComDadosInvalidos(){
+    public void tentarFazerLoginComDadosInvalidos(){
 
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("a[style=\"color: orange;\"]")));
 
