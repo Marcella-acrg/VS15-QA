@@ -114,7 +114,7 @@ public class RegisterTest {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[class=\"signup-form\"] h2")));
         driver.findElement(By.cssSelector("[data-qa=\"signup-name\"")).sendKeys(BaseDataFactory.nomeValido());
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-qa=\"signup-email\"")));
-        driver.findElement(By.cssSelector("[data-qa=\"signup-email\"")).sendKeys(BaseDataFactory.emailValido());
+        driver.findElement(By.cssSelector("[data-qa=\"signup-email\"")).sendKeys(BaseDataFactory.loginValido().getEmail());
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-qa=\"signup-button\"")));
         driver.findElement(By.cssSelector("[data-qa=\"signup-button\"")).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(lblEmailExist)));
